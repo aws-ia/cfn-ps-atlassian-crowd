@@ -1,5 +1,5 @@
 project:
-  name: quickstart-atlassian-crowd
+  name: cfn-ps-atlassian-crowd
   owner: quickstart-eng@amazon.com
   package_lambda: false
   #  s3_regional_buckets: true
@@ -29,7 +29,7 @@ tests:
       DBStorageType: Provisioned IOPS
       KeyPairName: replaced-by-taskcat-override-file
       QSS3BucketName: $[taskcat_autobucket]
-      QSS3KeyPrefix: quickstart-atlassian-crowd/
+      QSS3KeyPrefix: cfn-ps-atlassian-crowd/
       QSS3BucketRegion: $[taskcat_current_region]
       ExportPrefix: $[taskcat_genuuid]
     template: templates/quickstart-crowd-dc-with-vpc.template.yaml
