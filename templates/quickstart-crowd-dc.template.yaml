@@ -1,9 +1,8 @@
----
 AWSTemplateFormatVersion: 2010-09-09
 Description: Atlassian Crowd Data Center (qs-1r0baofad)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Launch into an existing VPC"
+    EntrypointName: Launch into an existing VPC
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -52,7 +51,7 @@ Metadata:
           - CustomDnsName
           - HostedZone
       - Label:
-          default: Application Tuning 
+          default: Application Tuning
         Parameters:
           - TomcatContextPath
           - CatalinaOpts
@@ -73,7 +72,6 @@ Metadata:
           - QSS3BucketRegion
           - QSS3KeyPrefix
           - ExportPrefix
-
     ParameterLabels:
       CatalinaOpts:
         default: Catalina options
@@ -161,25 +159,27 @@ Metadata:
         default: Quick Start S3 bucket Region
       QSS3KeyPrefix:
         default: Quick Start S3 key prefix
-
 Parameters:
   CatalinaOpts:
     Default: ''
     Description: Pass in any additional JVM options to tune Catalina.
     Type: String
   CidrBlock:
-    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x.
     Description: CIDR block allowed to access the Atlassian product. This value should be set to a trusted IP range if you want to give public access use '0.0.0.0/0'.
     Type: String
     MinLength: 9
     MaxLength: 18
   CloudWatchIntegration:
-    Default: "Metrics and Logs"
+    Default: Metrics and Logs
     Type: String
-    Description: "Enables CloudWatch metrics with or without log gathering. If cost is an issue, you can disable this setting."
-    AllowedValues: ["Off", "Metrics Only", "Metrics and Logs"]
-    ConstraintDescription: "Must be 'Off', 'Metrics Only', or 'Metrics and Logs'"
+    Description: Enables CloudWatch metrics with or without log gathering. If cost is an issue, you can disable this setting.
+    AllowedValues:
+      - 'Off'
+      - Metrics Only
+      - Metrics and Logs
+    ConstraintDescription: Must be 'Off', 'Metrics Only', or 'Metrics and Logs'
   ClusterNodeInstanceType:
     Default: c5.xlarge
     AllowedValues:
@@ -289,8 +289,8 @@ Parameters:
     Description: Size of cluster node root volume in GB. Size based on application indexes x 4.
     Type: Number
   CustomDnsName:
-    Default: ""
-    Description: 'Use custom existing DNS name for your Crowd Data Center instance. This takes precedence over hosted zone. You must own the domain and configure it to point to the load balancer.'
+    Default: ''
+    Description: Use custom existing DNS name for your Crowd Data Center instance. This takes precedence over hosted zone. You must own the domain and configure it to point to the load balancer.
     Type: String
   DBEngineVersion:
     Default: 10
@@ -299,7 +299,9 @@ Parameters:
       - 10
       - 11
       - 12
-    Description: "The database engine version to use. A suitable minor version is installed for your chosen engine. Make sure that the installed Crowd version supports the database engine selected. (Warning: Amazon RDS for PostgreSQL 9.6 will reach end of life on January 31st, 2022. Deployments after this date should not be made using this version. If you wish to upgrade to a major version from 9 see: https://confluence.atlassian.com/x/1IRlQQ)"
+    Description: 'The database engine version to use. A suitable minor version is installed for your chosen engine. Make sure that the installed Crowd version supports the database engine selected. (Warning:
+      Amazon RDS for PostgreSQL 9.6 will reach end of life on January 31st, 2022. Deployments after this date should not be made using this version. If you wish to upgrade to a major version from 9 see:
+      https://confluence.atlassian.com/x/1IRlQQ)'
     Type: String
   DBInstanceClass:
     Default: db.m5.large
@@ -341,35 +343,32 @@ Parameters:
     Type: String
   DBIops:
     Default: 1000
-    ConstraintDescription: 'Must be in the range 1000 - 30000.'
-    Description: 'Must be in the range of 1000 - 30000 and a multiple of 1000. This value is used only with Provisioned IOPS. The ratio of IOPS per allocated storage must be between 3.00 and 10.00.'
+    ConstraintDescription: Must be in the range 1000 - 30000.
+    Description: Must be in the range of 1000 - 30000 and a multiple of 1000. This value is used only with Provisioned IOPS. The ratio of IOPS per allocated storage must be between 3.00 and 10.00.
     MaxValue: 30000
     MinValue: 1000
     Type: Number
   DBMasterUserPassword:
-    AllowedPattern: >-
-      ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])(?!.*[@/"']).*$
-    ConstraintDescription: >-
-      Must be at least eight characters and include one uppercase, one lowercase, one number, and one of the following symbols: ! # $ { * : [ = , ] - _ + % &
-    Description: "Password for the master ('postgres') account. Must be at least eight characters and include one uppercase, one lowercase, one number, and one of the following symbols: ! # $ { * : [ = , ] - _ + % &"
-    NoEcho: True
+    AllowedPattern: ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])(?!.*[@/"']).*$
+    ConstraintDescription: 'Must be at least eight characters and include one uppercase, one lowercase, one number, and one of the following symbols: ! # $ { * : [ = , ] - _ + % &'
+    Description: 'Password for the master (''postgres'') account. Must be at least eight characters and include one uppercase, one lowercase, one number, and one of the following symbols: ! # $ { * : [
+      = , ] - _ + % &'
+    NoEcho: true
     MaxLength: 128
     MinLength: 8
     Type: String
   DBMultiAZ:
     Description: Whether to provision a Multi-AZ Amazon RDS instance.
-    Default: "true"
+    Default: 'true'
     AllowedValues:
-      - "true"
-      - "false"
+      - 'true'
+      - 'false'
     ConstraintDescription: Must be 'true' or 'false'.
     Type: String
   DBPassword:
-    AllowedPattern: >-
-      ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[\[\]\{\}]).*$
-    ConstraintDescription: >-
-      Must be at least eight characters and include at least one uppercase, one lowercase, one number, and any symbol except for: [ ] { }
-    Description: "Must be at least eight characters and include at least one uppercase, one lowercase, one number, and any symbol except for: [ ] { }."
+    AllowedPattern: ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[\[\]\{\}]).*$
+    ConstraintDescription: 'Must be at least eight characters and include at least one uppercase, one lowercase, one number, and any symbol except for: [ ] { }'
+    Description: 'Must be at least eight characters and include at least one uppercase, one lowercase, one number, and any symbol except for: [ ] { }.'
     MinLength: 8
     MaxLength: 128
     NoEcho: true
@@ -379,10 +378,10 @@ Parameters:
     Description: Database allocated storage size, in gigabytes (GB). If you choose Provisioned IOPS, storage should be between 100 and 6144 GB.
     Type: Number
   DBStorageEncrypted:
-    Default: "false"
+    Default: 'false'
     AllowedValues:
-      - "true"
-      - "false"
+      - 'true'
+      - 'false'
     Description: Whether or not to encrypt the database.
     Type: String
   DBStorageType:
@@ -394,29 +393,29 @@ Parameters:
     Description: Database storage type.
     Type: String
   DeploymentAutomationRepository:
-    Default: "https://bitbucket.org/atlassian/dc-deployments-automation.git"
+    Default: https://bitbucket.org/atlassian/dc-deployments-automation.git
     Type: String
     Description: The deployment automation repository to use for per-node initialization. Leave the default value unless you have customizations.
   DeploymentAutomationBranch:
-    Default: "master"
+    Default: master
     Type: String
     Description: The deployment automation repository branch to pull from.
   DeploymentAutomationPlaybook:
-    Default: "aws_crowd_dc_node.yml"
+    Default: aws_crowd_dc_node.yml
     Type: String
     Description: The Ansible playbook to invoke to initialize the Crowd node on first start.
   DeploymentAutomationCustomParams:
-    Default: ""
+    Default: ''
     Type: String
-    Description: (Optional) Additional command-line options for the `ansible-playbook` command. See https://bitbucket.org/atlassian/dc-deployments-automation/src/master/README.md for more information about overriding parameters. 
+    Description: (Optional) Additional command-line options for the `ansible-playbook` command. See https://bitbucket.org/atlassian/dc-deployments-automation/src/master/README.md for more information about
+      overriding parameters.
   DeploymentAutomationKeyName:
-    Default: ""
+    Default: ''
     Type: String
-    Description: (Optional) Key pair name to use with this repository. The key should be imported into the AWS Systems Manager parameter store. 
+    Description: (Optional) Key pair name to use with this repository. The key should be imported into the AWS Systems Manager parameter store.
   ExportPrefix:
-    Default: 'ATL-'
-    Description:
-      Each Atlassian Standard Infrastructure (ASI) uses a unique identifier. If you have multiple ASIs within the same AWS Region, use this field to specify where to deploy Crowd.
+    Default: ATL-
+    Description: Each Atlassian Standard Infrastructure (ASI) uses a unique identifier. If you have multiple ASIs within the same AWS Region, use this field to specify where to deploy Crowd.
     Type: String
   HostedZone:
     Default: ''
@@ -424,14 +423,16 @@ Parameters:
     Description: The domain name of the Amazon Route 53 private hosted zone in which to create CNAMES.
     Type: String
   InternetFacingLoadBalancer:
-    Default: "true"
-    AllowedValues: ["true", "false"]
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
     ConstraintDescription: Must be 'true' or 'false'.
     Description: Controls whether the load balancer should be visible to the internet (true) or only within the VPC (false).
     Type: String
   CrowdVersion:
     Default: 4.0.0
-    AllowedPattern: '(\d+\.\d+\.\d+(-?.*))|(latest)'
+    AllowedPattern: (\d+\.\d+\.\d+(-?.*))|(latest)
     ConstraintDescription: Must be a valid version number or 'latest' (for example, 4.0.0 for Crowd Software).
     Description: The version of Crowd Software to install. Find valid versions on the Crowd Release Notes page (https://confluence.atlassian.com/x/tgkD).
     Type: String
@@ -440,11 +441,12 @@ Parameters:
     Description: Override the default amount of memory to allocate to the JVM for your instance type. Set size in MB or GB (e.g. 1024 MB or 1 GB).
     Type: String
   BastionHostRequired:
-    Default: "true"
+    Default: 'true'
     AllowedValues:
-      - "true"
-      - "false"
-    Description: Whether to grant access to Crowd's Amazon EC2 instances through the ASI's bastion host (if it exists). If 'true', remember to provide an EC2 key pair. If your ASI does not have a bastion host, set the value to 'false'.
+      - 'true'
+      - 'false'
+    Description: Whether to grant access to Crowd's Amazon EC2 instances through the ASI's bastion host (if it exists). If 'true', remember to provide an EC2 key pair. If your ASI does not have a bastion
+      host, set the value to 'false'.
     Type: String
   KeyPairName:
     ConstraintDescription: Must be the name of an existing EC2 Key Pair. Note the supplied value must not include the file extension.
@@ -453,15 +455,17 @@ Parameters:
     Default: ''
   MailEnabled:
     AllowedValues:
-      - "true"
-      - "false"
+      - 'true'
+      - 'false'
     ConstraintDescription: Must be 'true' or 'false'.
-    Default: "true"
+    Default: 'true'
     Description: Enable mail processing and sending.
     Type: String
   SSLCertificateARN:
     Default: ''
-    Description: "Amazon Resource Name (ARN) of your SSL certificate. Providing this value automatically enables HTTPS on the product and load balancer, configured to use the corresponding certificate. If you want to use a certificate that you generated outside of Amazon, first import it to AWS Certificate Manager (ACM). After a successful import, you'll receive the ARN. If you want to create a certificate with ACM, you will receive the ARN after it's successfully created."
+    Description: Amazon Resource Name (ARN) of your SSL certificate. Providing this value automatically enables HTTPS on the product and load balancer, configured to use the corresponding certificate. If
+      you want to use a certificate that you generated outside of Amazon, first import it to AWS Certificate Manager (ACM). After a successful import, you'll receive the ARN. If you want to create a certificate
+      with ACM, you will receive the ARN after it's successfully created.
     MinLength: 0
     MaxLength: 90
     Type: String
@@ -475,18 +479,19 @@ Parameters:
     Type: Number
   TomcatContextPath:
     Default: ''
-    AllowedPattern: '^(\/[A-z_\-0-9\.]+)?$'
-    Description: The context path of this web application, which is matched against the beginning of each request URI to select the appropriate web application for processing. If used, must include leading '/'.
+    AllowedPattern: ^(\/[A-z_\-0-9\.]+)?$
+    Description: The context path of this web application, which is matched against the beginning of each request URI to select the appropriate web application for processing. If used, must include leading
+      '/'.
     Type: String
   TomcatDefaultConnectorPort:
     Default: 8080
     Description: The port on which to serve the application.
     Type: Number
   TomcatEnableLookups:
-    Default: "false"
+    Default: 'false'
     AllowedValues:
-      - "true"
-      - "false"
+      - 'true'
+      - 'false'
     Description: Set to true if you want calls to request.getRemoteHost() to perform DNS lookups to return the actual host name of the remote client.
     Type: String
   TomcatMaxThreads:
@@ -498,7 +503,7 @@ Parameters:
     Description: The minimum number of threads always running.
     Type: Number
   TomcatProtocol:
-    Default: 'HTTP/1.1'
+    Default: HTTP/1.1
     Description: Sets the protocol to handle incoming traffic.
     Type: String
   TomcatRedirectPort:
@@ -506,17 +511,13 @@ Parameters:
     Description: The port number for Catalina to use when automatically redirecting a non-SSL connector actioning a redirect to an SSL URI.
     Type: Number
   QSS3BucketName:
-    Default: 'aws-quickstart'
+    Default: aws-quickstart
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
-      (-).
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-).
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   QSS3BucketRegion:
-    Default: 'us-east-1'
+    Default: us-east-1
     AllowedValues:
       - us-east-1
       - us-east-2
@@ -536,48 +537,77 @@ Parameters:
       - sa-east-1
       - us-gov-west-1
       - us-gov-east-1
-    Description: The AWS Region where the Quick Start S3 bucket is hosted.
-      By default, this is set to us-east-1. Do not update the value unless using a custom Quick Start S3 bucket.
+    Description: The AWS Region where the Quick Start S3 bucket is hosted. By default, this is set to us-east-1. Do not update the value unless using a custom Quick Start S3 bucket.
     Type: String
   QSS3KeyPrefix:
-    Default: 'quickstart-atlassian-crowd/'
+    Default: quickstart-atlassian-crowd/
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/).
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/).
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Type: String
-
 Conditions:
   DisableMail:
-    !Not [!Equals [!Ref MailEnabled, true]]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: MailEnabled
+          - true
   EnableCloudWatch:
-    !Not [!Equals [!Ref CloudWatchIntegration, 'Off']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: CloudWatchIntegration
+          - 'Off'
   EnableCloudWatchLogs:
-    !Equals [!Ref CloudWatchIntegration, 'Metrics and Logs']
+    Fn::Equals:
+      - Ref: CloudWatchIntegration
+      - Metrics and Logs
   DoSSL:
-    !Not [!Equals [!Ref SSLCertificateARN, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: SSLCertificateARN
+          - ''
   KeyProvided:
-    !Not [!Equals [!Ref KeyPairName, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: KeyPairName
+          - ''
   OverrideHeap:
-    !Not [!Equals [!Ref JvmHeapOverride, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: JvmHeapOverride
+          - ''
   UseContextPath:
-    !Not [!Equals [!Ref TomcatContextPath, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: TomcatContextPath
+          - ''
   UseCustomDnsName:
-    !Not [!Equals [!Ref CustomDnsName, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: CustomDnsName
+          - ''
   UseDatabaseEncryption:
-    !Equals [!Ref DBStorageEncrypted, true]
+    Fn::Equals:
+      - Ref: DBStorageEncrypted
+      - true
   UseHostedZone:
-    !Not [!Equals [!Ref HostedZone, '']]
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: HostedZone
+          - ''
   UsePublicIp:
-    !Equals [!Ref InternetFacingLoadBalancer, 'true']
+    Fn::Equals:
+      - Ref: InternetFacingLoadBalancer
+      - 'true'
   UsingDefaultBucket:
-    !Equals [!Ref QSS3BucketName, 'aws-quickstart']
-  UseBastionHost: !And
-    - !Equals [!Ref BastionHostRequired, true]
-    - !Condition KeyProvided
-
+    Fn::Equals:
+      - Ref: QSS3BucketName
+      - aws-quickstart
+  UseBastionHost:
+    Fn::And:
+      - Fn::Equals:
+          - Ref: BastionHostRequired
+          - true
+      - Condition: KeyProvided
 Mappings:
   AWSInstanceType2Arch:
     c4.large:
@@ -850,7 +880,6 @@ Mappings:
     z1d.12xlarge:
       Arch: HVM64
       Jvmheap: 12288m
-
   AWSRegionArch2AMI:
     ap-northeast-1:
       HVM64: ami-08d56ac42e2d4a08b
@@ -888,7 +917,6 @@ Mappings:
       HVM64: ami-0bbf3595bb2fb39ec
     us-gov-east-1:
       HVM64: ami-0cc17d57bec8c6017
-
 Resources:
   ClusterNodeRole:
     Type: AWS::IAM::Role
@@ -898,11 +926,13 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: [ec2.amazonaws.com]
-            Action: ['sts:AssumeRole']
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
       ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore'
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/CloudWatchAgentServerPolicy'
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/CloudWatchAgentServerPolicy
       Path: /
       Policies:
         - PolicyName: CrowdClusterNodePolicy
@@ -912,73 +942,85 @@ Resources:
               - Effect: Allow
                 Action: ec2:CreateTags
                 Resource:
-                  - !Sub "arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:instance/*"
-                  - !Sub "arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:vpc/*"
+                  - Fn::Sub: arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:instance/*
+                  - Fn::Sub: arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:vpc/*
               - Effect: Allow
                 Action:
                   - autoscaling:CreateOrUpdateTags
                   - route53:ListResourceRecordSets
                 Resource:
-                  - !Sub "arn:${AWS::Partition}:route53:::hostedzone/*"
-                  - !Sub "arn:${AWS::Partition}:autoscaling:*:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/*"
+                  - Fn::Sub: arn:${AWS::Partition}:route53:::hostedzone/*
+                  - Fn::Sub: arn:${AWS::Partition}:autoscaling:*:${AWS::AccountId}:autoScalingGroup:*:autoScalingGroupName/*
               - Effect: Allow
                 Action:
                   - ec2:DescribeInstances
                   - ec2:DescribeTags
                   - autoscaling:DescribeTags
                   - route53:ListHostedZones
-                Resource: "*"
+                Resource: '*'
               - Effect: Allow
                 Action: route53:ChangeResourceRecordSets
                 Resource:
-                  - !Sub "arn:${AWS::Partition}:route53:::hostedzone/*"
-                  - !Sub "arn:${AWS::Partition}:route53:::change/*"
-                  - !Sub "arn:${AWS::Partition}:route53:::healthcheck/*"
-                  - !Sub "arn:${AWS::Partition}:route53:::delegationset/*"
+                  - Fn::Sub: arn:${AWS::Partition}:route53:::hostedzone/*
+                  - Fn::Sub: arn:${AWS::Partition}:route53:::change/*
+                  - Fn::Sub: arn:${AWS::Partition}:route53:::healthcheck/*
+                  - Fn::Sub: arn:${AWS::Partition}:route53:::delegationset/*
         - PolicyName: SSMParameterPutAccess
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Action:
-                  - 'ssm:PutParameter'
+                  - ssm:PutParameter
                 Effect: Allow
-                Resource: !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}/pinned-ansible-sha"
+                Resource:
+                  Fn::Sub: arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}/pinned-ansible-sha
   ClusterNodeInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
-      Roles: [!Ref ClusterNodeRole]
-  # Crowd node config
+      Roles:
+        - Ref: ClusterNodeRole
   ClusterNodeGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     CreationPolicy:
       ResourceSignal:
-        Count: !Ref ClusterNodeMin
+        Count:
+          Ref: ClusterNodeMin
         Timeout: PT15M
     Properties:
-      DesiredCapacity: !Ref ClusterNodeMin
-      LaunchConfigurationName: !Ref ClusterNodeLaunchConfig
-      MaxSize: !Ref ClusterNodeMax
-      MinSize: !Ref ClusterNodeMin
-      TargetGroupARNs: [!Ref MainTargetGroup]
-      VPCZoneIdentifier: !Split
-        - ","
-        - Fn::ImportValue: !Sub "${ExportPrefix}PriNets"
+      DesiredCapacity:
+        Ref: ClusterNodeMin
+      LaunchConfigurationName:
+        Ref: ClusterNodeLaunchConfig
+      MaxSize:
+        Ref: ClusterNodeMax
+      MinSize:
+        Ref: ClusterNodeMin
+      TargetGroupARNs:
+        - Ref: MainTargetGroup
+      VPCZoneIdentifier:
+        Fn::Split:
+          - ','
+          - Fn::ImportValue:
+              Fn::Sub: ${ExportPrefix}PriNets
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Crowd Node", {StackName: !Ref 'AWS::StackName'}]
+          Value:
+            Fn::Sub:
+              - ${StackName} Crowd Node
+              - StackName:
+                  Ref: AWS::StackName
           PropagateAtLaunch: true
         - Key: Cluster
-          Value: !Ref AWS::StackName
+          Value:
+            Ref: AWS::StackName
           PropagateAtLaunch: true
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
           PropagateAtLaunch: true
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
           PropagateAtLaunch: true
-
   ClusterNodeLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
@@ -991,150 +1033,278 @@ Resources:
         config:
           files:
             /etc/atl:
-              mode: "000640"
+              mode: '000640'
               owner: root
               group: root
               content:
-                'Fn::Join':
+                Fn::Join:
                   - "\n"
-                  - - "ATL_PRODUCT_FAMILY=crowd"
-                    - "ATL_DB_DRIVER=org.postgresql.Driver"
-                    - "ATL_JDBC_DB_NAME=crowd"
-                    - "ATL_JDBC_USER=atlcrowd"
-                    - "ATL_JVM_OPTS='-XX:+ExplicitGCInvokesConcurrent -XX:ReservedCodeCacheSize=512M'"
-                    - "ATL_APP_DATA_MOUNT_ENABLED=false"
-                    - "ATL_ENABLED_PRODUCTS=Crowd"
-                    - "ATL_ENABLED_SHARED_HOMES="
-                    - "ATL_NGINX_ENABLED=false"
-                    - "ATL_POSTGRES_ENABLED=false"
-                    - "ATL_RELEASE_S3_BUCKET=atlassian-software"
-                    - "ATL_RELEASE_S3_PATH=releases"
-                    - "ATL_SSL_SELF_CERT_ENABLED=false"
-                    - ""
-                    - !Sub ["ATL_PRODUCT_VERSION=${ProductVersion}", ProductVersion: !Ref CrowdVersion]
-                    - !Sub ["ATL_EFS_ID=${ElasticFileSystem}", ElasticFileSystem: !Ref ElasticFileSystem]
-                    - !If [DoSSL, "ATL_SSL_PROXY=true", !Ref "AWS::NoValue"]
-                    - !Sub ["ATL_AWS_STACK_NAME=${StackName}", StackName: !Ref "AWS::StackName"]
-                    - !Sub ["ATL_CATALINA_OPTS=\"${CatalinaOpts} ${MailOpts}\"", { CatalinaOpts: !Ref CatalinaOpts, MailOpts: !If [DisableMail, '-Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true', ''] }]
-                    - !Sub ["ATL_DB_HOST=${DBEndpointAddress}", DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress]
-                    - !Sub ["ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'", DBMasterUserPassword: !Ref DBMasterUserPassword]
-                    - !Sub ["ATL_DB_PORT=${DBEndpointPort}", DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort]
-                    - !Sub ["ATL_HOSTEDZONE=${HostedZone}", HostedZone: !Ref HostedZone]
-                    - !Sub ["ATL_JDBC_PASSWORD='${DBPassword}'", DBPassword: !Ref DBPassword]
-                    - !Sub ["ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/crowd?targetServerType=master", { DBEndpointAddress: !GetAtt DB.Outputs.RDSEndPointAddress, DBEndpointPort: !GetAtt DB.Outputs.RDSEndPointPort }]
-                    - !Sub ["ATL_JVM_HEAP=${AtlJvmHeap}", AtlJvmHeap: !If [OverrideHeap, !Ref 'JvmHeapOverride', !FindInMap [AWSInstanceType2Arch, !Ref ClusterNodeInstanceType, Jvmheap]]]
-                    - !Sub ["ATL_PROXY_NAME=${AtlProxyName}", AtlProxyName: !If [UseCustomDnsName, !Ref CustomDnsName, !If [UseHostedZone, !Ref LoadBalancerCname, !GetAtt LoadBalancer.DNSName]]]
-                    - !Sub ["ATL_TOMCAT_ACCEPTCOUNT=${TomcatAcceptCount}", TomcatAcceptCount: !Ref TomcatAcceptCount]
-                    - !Sub ["ATL_TOMCAT_CONNECTIONTIMEOUT=${TomcatConnectionTimeout}", TomcatConnectionTimeout: !Ref TomcatConnectionTimeout]
-                    - !Sub ["ATL_TOMCAT_CONTEXTPATH=${TomcatContextPath}", TomcatContextPath: !Ref TomcatContextPath]
-                    - !Sub ["ATL_TOMCAT_DEFAULTCONNECTORPORT=${TomcatDefaultConnectorPort}", TomcatDefaultConnectorPort: !Ref TomcatDefaultConnectorPort]
-                    - !Sub ["ATL_TOMCAT_ENABLELOOKUPS=${TomcatEnableLookups}", TomcatEnableLookups: !Ref TomcatEnableLookups]
-                    - !Sub ["ATL_TOMCAT_MAXTHREADS=${TomcatMaxThreads}", TomcatMaxThreads: !Ref TomcatMaxThreads]
-                    - !Sub ["ATL_TOMCAT_MINSPARETHREADS=${TomcatMinSpareThreads}", TomcatMinSpareThreads: !Ref TomcatMinSpareThreads]
-                    - !Sub ["ATL_TOMCAT_PROTOCOL=${TomcatProtocol}", TomcatProtocol: !Ref TomcatProtocol]
-                    - !Sub ["ATL_TOMCAT_PROXYPORT=${TomcatProxyPort}", TomcatProxyPort: !If [DoSSL, 443, 80]]
-                    - !Sub ["ATL_TOMCAT_REDIRECTPORT=${TomcatRedirectPort}", TomcatRedirectPort: !Ref TomcatRedirectPort]
-                    - !Sub ["ATL_TOMCAT_SCHEME=${TomcatScheme}", TomcatScheme: !If [DoSSL, https, http]]
-                    - !Sub ["ATL_TOMCAT_SECURE=${TomcatSecure}", TomcatSecure: !If [DoSSL, true, false]]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}", DeployRepository: !Ref DeploymentAutomationRepository]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}", DeployRepositoryBranch: !Ref DeploymentAutomationBranch]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}", DeployRepositoryPlaybook: !Ref DeploymentAutomationPlaybook]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}", DeployRepositoryKeyName: !Ref DeploymentAutomationKeyName]
-                    - !Sub ["ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'", DeployRepositoryCustomParams: !Ref DeploymentAutomationCustomParams]
-
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}", EnableCW: !If [EnableCloudWatch, true, false]]
-                    - !Sub ["ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}", EnableCWLogs: !If [EnableCloudWatchLogs, true, false]]
-
+                  - - ATL_PRODUCT_FAMILY=crowd
+                    - ATL_DB_DRIVER=org.postgresql.Driver
+                    - ATL_JDBC_DB_NAME=crowd
+                    - ATL_JDBC_USER=atlcrowd
+                    - ATL_JVM_OPTS='-XX:+ExplicitGCInvokesConcurrent -XX:ReservedCodeCacheSize=512M'
+                    - ATL_APP_DATA_MOUNT_ENABLED=false
+                    - ATL_ENABLED_PRODUCTS=Crowd
+                    - ATL_ENABLED_SHARED_HOMES=
+                    - ATL_NGINX_ENABLED=false
+                    - ATL_POSTGRES_ENABLED=false
+                    - ATL_RELEASE_S3_BUCKET=atlassian-software
+                    - ATL_RELEASE_S3_PATH=releases
+                    - ATL_SSL_SELF_CERT_ENABLED=false
+                    - ''
+                    - Fn::Sub:
+                        - ATL_PRODUCT_VERSION=${ProductVersion}
+                        - ProductVersion:
+                            Ref: CrowdVersion
+                    - Fn::Sub:
+                        - ATL_EFS_ID=${ElasticFileSystem}
+                        - ElasticFileSystem:
+                            Ref: ElasticFileSystem
+                    - Fn::If:
+                        - DoSSL
+                        - ATL_SSL_PROXY=true
+                        - Ref: AWS::NoValue
+                    - Fn::Sub:
+                        - ATL_AWS_STACK_NAME=${StackName}
+                        - StackName:
+                            Ref: AWS::StackName
+                    - Fn::Sub:
+                        - ATL_CATALINA_OPTS="${CatalinaOpts} ${MailOpts}"
+                        - CatalinaOpts:
+                            Ref: CatalinaOpts
+                          MailOpts:
+                            Fn::If:
+                              - DisableMail
+                              - -Datlassian.mail.senddisabled=true -Datlassian.mail.fetchdisabled=true -Datlassian.mail.popdisabled=true
+                              - ''
+                    - Fn::Sub:
+                        - ATL_DB_HOST=${DBEndpointAddress}
+                        - DBEndpointAddress:
+                            Fn::GetAtt:
+                              - DB
+                              - Outputs.RDSEndPointAddress
+                    - Fn::Sub:
+                        - ATL_DB_ROOT_PASSWORD='${DBMasterUserPassword}'
+                        - DBMasterUserPassword:
+                            Ref: DBMasterUserPassword
+                    - Fn::Sub:
+                        - ATL_DB_PORT=${DBEndpointPort}
+                        - DBEndpointPort:
+                            Fn::GetAtt:
+                              - DB
+                              - Outputs.RDSEndPointPort
+                    - Fn::Sub:
+                        - ATL_HOSTEDZONE=${HostedZone}
+                        - HostedZone:
+                            Ref: HostedZone
+                    - Fn::Sub:
+                        - ATL_JDBC_PASSWORD='${DBPassword}'
+                        - DBPassword:
+                            Ref: DBPassword
+                    - Fn::Sub:
+                        - ATL_JDBC_URL=jdbc:postgresql://${DBEndpointAddress}:${DBEndpointPort}/crowd?targetServerType=master
+                        - DBEndpointAddress:
+                            Fn::GetAtt:
+                              - DB
+                              - Outputs.RDSEndPointAddress
+                          DBEndpointPort:
+                            Fn::GetAtt:
+                              - DB
+                              - Outputs.RDSEndPointPort
+                    - Fn::Sub:
+                        - ATL_JVM_HEAP=${AtlJvmHeap}
+                        - AtlJvmHeap:
+                            Fn::If:
+                              - OverrideHeap
+                              - Ref: JvmHeapOverride
+                              - Fn::FindInMap:
+                                  - AWSInstanceType2Arch
+                                  - Ref: ClusterNodeInstanceType
+                                  - Jvmheap
+                    - Fn::Sub:
+                        - ATL_PROXY_NAME=${AtlProxyName}
+                        - AtlProxyName:
+                            Fn::If:
+                              - UseCustomDnsName
+                              - Ref: CustomDnsName
+                              - Fn::If:
+                                  - UseHostedZone
+                                  - Ref: LoadBalancerCname
+                                  - Fn::GetAtt:
+                                      - LoadBalancer
+                                      - DNSName
+                    - Fn::Sub:
+                        - ATL_TOMCAT_ACCEPTCOUNT=${TomcatAcceptCount}
+                        - TomcatAcceptCount:
+                            Ref: TomcatAcceptCount
+                    - Fn::Sub:
+                        - ATL_TOMCAT_CONNECTIONTIMEOUT=${TomcatConnectionTimeout}
+                        - TomcatConnectionTimeout:
+                            Ref: TomcatConnectionTimeout
+                    - Fn::Sub:
+                        - ATL_TOMCAT_CONTEXTPATH=${TomcatContextPath}
+                        - TomcatContextPath:
+                            Ref: TomcatContextPath
+                    - Fn::Sub:
+                        - ATL_TOMCAT_DEFAULTCONNECTORPORT=${TomcatDefaultConnectorPort}
+                        - TomcatDefaultConnectorPort:
+                            Ref: TomcatDefaultConnectorPort
+                    - Fn::Sub:
+                        - ATL_TOMCAT_ENABLELOOKUPS=${TomcatEnableLookups}
+                        - TomcatEnableLookups:
+                            Ref: TomcatEnableLookups
+                    - Fn::Sub:
+                        - ATL_TOMCAT_MAXTHREADS=${TomcatMaxThreads}
+                        - TomcatMaxThreads:
+                            Ref: TomcatMaxThreads
+                    - Fn::Sub:
+                        - ATL_TOMCAT_MINSPARETHREADS=${TomcatMinSpareThreads}
+                        - TomcatMinSpareThreads:
+                            Ref: TomcatMinSpareThreads
+                    - Fn::Sub:
+                        - ATL_TOMCAT_PROTOCOL=${TomcatProtocol}
+                        - TomcatProtocol:
+                            Ref: TomcatProtocol
+                    - Fn::Sub:
+                        - ATL_TOMCAT_PROXYPORT=${TomcatProxyPort}
+                        - TomcatProxyPort:
+                            Fn::If:
+                              - DoSSL
+                              - 443
+                              - 80
+                    - Fn::Sub:
+                        - ATL_TOMCAT_REDIRECTPORT=${TomcatRedirectPort}
+                        - TomcatRedirectPort:
+                            Ref: TomcatRedirectPort
+                    - Fn::Sub:
+                        - ATL_TOMCAT_SCHEME=${TomcatScheme}
+                        - TomcatScheme:
+                            Fn::If:
+                              - DoSSL
+                              - https
+                              - http
+                    - Fn::Sub:
+                        - ATL_TOMCAT_SECURE=${TomcatSecure}
+                        - TomcatSecure:
+                            Fn::If:
+                              - DoSSL
+                              - true
+                              - false
+                    - Fn::Sub:
+                        - ATL_DEPLOYMENT_REPOSITORY=${DeployRepository}
+                        - DeployRepository:
+                            Ref: DeploymentAutomationRepository
+                    - Fn::Sub:
+                        - ATL_DEPLOYMENT_REPOSITORY_BRANCH=${DeployRepositoryBranch}
+                        - DeployRepositoryBranch:
+                            Ref: DeploymentAutomationBranch
+                    - Fn::Sub:
+                        - ATL_DEPLOYMENT_REPOSITORY_PLAYBOOK=${DeployRepositoryPlaybook}
+                        - DeployRepositoryPlaybook:
+                            Ref: DeploymentAutomationPlaybook
+                    - Fn::Sub:
+                        - ATL_DEPLOYMENT_REPOSITORY_KEYNAME=${DeployRepositoryKeyName}
+                        - DeployRepositoryKeyName:
+                            Ref: DeploymentAutomationKeyName
+                    - Fn::Sub:
+                        - ATL_DEPLOYMENT_REPOSITORY_CUSTOM_PARAMS='${DeployRepositoryCustomParams}'
+                        - DeployRepositoryCustomParams:
+                            Ref: DeploymentAutomationCustomParams
+                    - Fn::Sub:
+                        - ATL_AWS_ENABLE_CLOUDWATCH=${EnableCW}
+                        - EnableCW:
+                            Fn::If:
+                              - EnableCloudWatch
+                              - true
+                              - false
+                    - Fn::Sub:
+                        - ATL_AWS_ENABLE_CLOUDWATCH_LOGS=${EnableCWLogs}
+                        - EnableCWLogs:
+                            Fn::If:
+                              - EnableCloudWatchLogs
+                              - true
+                              - false
             /opt/atlassian/bin/clone_deployment_repo:
-              content: !Sub |
-                #!/bin/bash
-                key_location=/root/.ssh/deployment_repo_key
-                key_name="${DeploymentAutomationKeyName}"
-                ssm_pin=/${AWS::StackName}/pinned-ansible-sha
-
-                yum install -y git awscli jq
-
-                if [[ ! -z "$key_name" ]]; then
-                    # Ensure awscli is up to date
-                    key_val=$(aws --region=${AWS::Region} ssm get-parameters --names "$key_name" --with-decryption | jq --raw-output '.Parameters[0].Value')
-                    echo -e "$key_val" > $key_location
-                    chmod 600 $key_location
-                    export GIT_SSH_COMMAND="ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -i $key_location"
-                else
-                    export GIT_SSH_COMMAND="ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
-                fi
-
-                ### Ansible repo pinning ###
-                pinned_commit_id=$(aws --region=${AWS::Region} ssm get-parameters --names "$ssm_pin" | jq --raw-output '.Parameters[0].Value')
-
-                git clone "${DeploymentAutomationRepository}" -b "${DeploymentAutomationBranch}" /opt/atlassian/dc-deployments-automation/
-                cd /opt/atlassian/dc-deployments-automation/
-
-                if [[ "$pinned_commit_id" == "latest" || -z "$pinned_commit_id" ]]; then
-                  head_id=$(git rev-parse HEAD)
-                  echo "SSM param [$ssm_pin] has been set to 'latest' - Using the HEAD SHA [$head_id] to build cluster [${AWS::StackName}]"
-                  echo "Updating SSM param [$ssm_pin] with current HEAD SHA: [$head_id]"
-                  aws --region=${AWS::Region} ssm put-parameter --name "$ssm_pin" --value "$head_id" --overwrite --type String
-                else
-                  echo "Ansible repo has been pinned, checking out commit: [$pinned_commit_id]"
-                  git checkout -b "pinned-ansible-sha-$pinned_commit_id" "$pinned_commit_id"
-                fi
-              mode: "000750"
+              content:
+                Fn::Sub: "#!/bin/bash\nkey_location=/root/.ssh/deployment_repo_key\nkey_name=\"${DeploymentAutomationKeyName}\"\nssm_pin=/${AWS::StackName}/pinned-ansible-sha\n\nyum install -y git awscli\
+                  \ jq\n\nif [[ ! -z \"$key_name\" ]]; then\n    # Ensure awscli is up to date\n    key_val=$(aws --region=${AWS::Region} ssm get-parameters --names \"$key_name\" --with-decryption | jq\
+                  \ --raw-output '.Parameters[0].Value')\n    echo -e \"$key_val\" > $key_location\n    chmod 600 $key_location\n    export GIT_SSH_COMMAND=\"ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no\
+                  \ -i $key_location\"\nelse\n    export GIT_SSH_COMMAND=\"ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no\"\nfi\n\n### Ansible repo pinning ###\npinned_commit_id=$(aws --region=${AWS::Region}\
+                  \ ssm get-parameters --names \"$ssm_pin\" | jq --raw-output '.Parameters[0].Value')\n\ngit clone \"${DeploymentAutomationRepository}\" -b \"${DeploymentAutomationBranch}\" /opt/atlassian/dc-deployments-automation/\n\
+                  cd /opt/atlassian/dc-deployments-automation/\n\nif [[ \"$pinned_commit_id\" == \"latest\" || -z \"$pinned_commit_id\" ]]; then\n  head_id=$(git rev-parse HEAD)\n  echo \"SSM param [$ssm_pin]\
+                  \ has been set to 'latest' - Using the HEAD SHA [$head_id] to build cluster [${AWS::StackName}]\"\n  echo \"Updating SSM param [$ssm_pin] with current HEAD SHA: [$head_id]\"\n  aws --region=${AWS::Region}\
+                  \ ssm put-parameter --name \"$ssm_pin\" --value \"$head_id\" --overwrite --type String\nelse\n  echo \"Ansible repo has been pinned, checking out commit: [$pinned_commit_id]\"\n  git checkout\
+                  \ -b \"pinned-ansible-sha-$pinned_commit_id\" \"$pinned_commit_id\"\nfi\n"
+              mode: '000750'
               owner: root
               group: root
-
           commands:
             070_create_atl_dir:
-              test: "test ! -d /opt/atlassian/"
+              test: test ! -d /opt/atlassian/
               command: mkdir -p /opt/atlassian
               ignoreErrors: false
             071_install_packages:
               command: yum install -y git python-virtualenv
               ignoreErrors: true
             072_clone_atl_scripts:
-              test: "test ! -d /opt/atlassian/dc-deployments-automation/"
+              test: test ! -d /opt/atlassian/dc-deployments-automation/
               command: /opt/atlassian/bin/clone_deployment_repo
               ignoreErrors: true
             080_run_atl_init_node:
-              command: !Sub |
-                cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local ${DeploymentAutomationPlaybook} /var/log/ansible-bootstrap.log
+              command:
+                Fn::Sub: "cd /opt/atlassian/dc-deployments-automation/ && ./bin/install-ansible && ./bin/ansible-with-atl-env inv/aws_node_local ${DeploymentAutomationPlaybook} /var/log/ansible-bootstrap.log\n"
               ignoreErrors: true
-
     Properties:
       AssociatePublicIpAddress: false
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
-            VolumeSize: !Ref ClusterNodeVolumeSize
+            VolumeSize:
+              Ref: ClusterNodeVolumeSize
         - DeviceName: /dev/xvdf
           NoDevice: true
-      KeyName: !If
-        - KeyProvided
-        - !Ref KeyPairName
-        - Ref: AWS::NoValue
-      IamInstanceProfile: !Ref ClusterNodeInstanceProfile
+      KeyName:
+        Fn::If:
+          - KeyProvided
+          - Ref: KeyPairName
+          - Ref: AWS::NoValue
+      IamInstanceProfile:
+        Ref: ClusterNodeInstanceProfile
       ImageId:
-        !FindInMap
+        Fn::FindInMap:
           - AWSRegionArch2AMI
-          - !Ref AWS::Region
-          - !FindInMap
+          - Ref: AWS::Region
+          - Fn::FindInMap:
               - AWSInstanceType2Arch
-              - !Ref ClusterNodeInstanceType
+              - Ref: ClusterNodeInstanceType
               - Arch
-      InstanceType: !Ref ClusterNodeInstanceType
-      SecurityGroups: [!Ref SecurityGroup]
+      InstanceType:
+        Ref: ClusterNodeInstanceType
+      SecurityGroups:
+        - Ref: SecurityGroup
       UserData:
         Fn::Base64:
-          !Join
-          - ""
-          -
-            - "#!/bin/bash -xe\n"
-            - "yum update -y aws-cfn-bootstrap\n"
-            - !Sub ["/opt/aws/bin/cfn-init -v --stack ${StackName}", {StackName: !Ref "AWS::StackName"}]
-            - !Sub [" --resource ClusterNodeLaunchConfig --region ${Region}\n", {Region: !Ref "AWS::Region"}]
-            - !Sub ["/opt/aws/bin/cfn-signal -e $? --stack ${StackName}", {StackName: !Ref "AWS::StackName"}]
-            - !Sub [" --resource ClusterNodeGroup --region ${Region}", {Region: !Ref "AWS::Region"}]
-  # Elastic file system
+          Fn::Join:
+            - ''
+            - - "#!/bin/bash -xe\n"
+              - "yum update -y aws-cfn-bootstrap\n"
+              - Fn::Sub:
+                  - /opt/aws/bin/cfn-init -v --stack ${StackName}
+                  - StackName:
+                      Ref: AWS::StackName
+              - Fn::Sub:
+                  - " --resource ClusterNodeLaunchConfig --region ${Region}\n"
+                  - Region:
+                      Ref: AWS::Region
+              - Fn::Sub:
+                  - /opt/aws/bin/cfn-signal -e $? --stack ${StackName}
+                  - StackName:
+                      Ref: AWS::StackName
+              - Fn::Sub:
+                  - ' --resource ClusterNodeGroup --region ${Region}'
+                  - Region:
+                      Ref: AWS::Region
   ElasticFileSystem:
     Type: AWS::EFS::FileSystem
     Properties:
@@ -1142,122 +1312,187 @@ Resources:
         Status: ENABLED
       FileSystemTags:
         - Key: Name
-          Value: !Join [' ', [!Ref 'AWS::StackName', 'cluster shared-files']]
+          Value:
+            Fn::Join:
+              - ' '
+              - - Ref: AWS::StackName
+                - cluster shared-files
         - Key: Application
-          Value: !Ref AWS::StackId
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
+          Value:
+            Ref: AWS::StackId
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
   EFSMountAz1:
     Type: AWS::EFS::MountTarget
     Properties:
-      FileSystemId: !Ref ElasticFileSystem
-      SecurityGroups: [!Ref SecurityGroup]
-      SubnetId: !Select
-      - 0
-      - !Split
-           - ","
-           - Fn::ImportValue: !Sub "${ExportPrefix}PriNets"
+      FileSystemId:
+        Ref: ElasticFileSystem
+      SecurityGroups:
+        - Ref: SecurityGroup
+      SubnetId:
+        Fn::Select:
+          - 0
+          - Fn::Split:
+              - ','
+              - Fn::ImportValue:
+                  Fn::Sub: ${ExportPrefix}PriNets
   EFSMountAz2:
     Type: AWS::EFS::MountTarget
     Properties:
-      FileSystemId: !Ref ElasticFileSystem
-      SecurityGroups: [!Ref SecurityGroup]
-      SubnetId: !Select
-        - 1
-        - !Split
-          - ","
-          - Fn::ImportValue: !Sub "${ExportPrefix}PriNets"
+      FileSystemId:
+        Ref: ElasticFileSystem
+      SecurityGroups:
+        - Ref: SecurityGroup
+      SubnetId:
+        Fn::Select:
+          - 1
+          - Fn::Split:
+              - ','
+              - Fn::ImportValue:
+                  Fn::Sub: ${ExportPrefix}PriNets
   EFSCname:
     Type: AWS::Route53::RecordSet
     Condition: UseHostedZone
     Properties:
-      HostedZoneName: !Ref HostedZone
+      HostedZoneName:
+        Ref: HostedZone
       Comment: Route53 cname for the efs
-      Name: !If [ UseHostedZone, !Join ['.', [!Ref 'AWS::StackName', 'efs', !Ref 'HostedZone']], '']
+      Name:
+        Fn::If:
+          - UseHostedZone
+          - Fn::Join:
+              - .
+              - - Ref: AWS::StackName
+                - efs
+                - Ref: HostedZone
+          - ''
       Type: CNAME
       TTL: 900
       ResourceRecords:
-        - !Join ['.', [!Ref ElasticFileSystem, 'efs', !Ref 'AWS::Region', 'amazonaws.com.']]
-  # Database
+        - Fn::Join:
+            - .
+            - - Ref: ElasticFileSystem
+              - efs
+              - Ref: AWS::Region
+              - amazonaws.com.
   DB:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-database-for-atlassian-services.yaml
-        - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-          S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+      TemplateURL:
+        Fn::Sub:
+          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-database-for-atlassian-services.yaml
+          - S3Bucket:
+              Fn::If:
+                - UsingDefaultBucket
+                - Fn::Sub: ${QSS3BucketName}-${AWS::Region}
+                - Ref: QSS3BucketName
+            S3Region:
+              Fn::If:
+                - UsingDefaultBucket
+                - Ref: AWS::Region
+                - Ref: QSS3BucketRegion
       Parameters:
-        DatabaseImplementation: "PostgreSQL"
-        DBEngineVersion: !Ref DBEngineVersion
-        DBAllocatedStorage: !Ref DBStorage
-        DBAutoMinorVersionUpgrade: "true"
-        DBBackupRetentionPeriod: "1"
-        DBInstanceClass: !Ref DBInstanceClass
-        DBIops: !Ref DBIops
-        DBMasterUserPassword: !Ref DBMasterUserPassword
-        DBMultiAZ: !Ref DBMultiAZ
-        DBSecurityGroup: !Ref SecurityGroup
-        DBStorageEncrypted: !Ref DBStorageEncrypted
-        DBStorageType: !Ref DBStorageType
-        ExportPrefix: !Ref ExportPrefix
-        QSS3BucketName: !Ref QSS3BucketName
-        QSS3BucketRegion: !Ref QSS3BucketRegion
-        QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        DatabaseImplementation: PostgreSQL
+        DBEngineVersion:
+          Ref: DBEngineVersion
+        DBAllocatedStorage:
+          Ref: DBStorage
+        DBAutoMinorVersionUpgrade: 'true'
+        DBBackupRetentionPeriod: '1'
+        DBInstanceClass:
+          Ref: DBInstanceClass
+        DBIops:
+          Ref: DBIops
+        DBMasterUserPassword:
+          Ref: DBMasterUserPassword
+        DBMultiAZ:
+          Ref: DBMultiAZ
+        DBSecurityGroup:
+          Ref: SecurityGroup
+        DBStorageEncrypted:
+          Ref: DBStorageEncrypted
+        DBStorageType:
+          Ref: DBStorageType
+        ExportPrefix:
+          Ref: ExportPrefix
+        QSS3BucketName:
+          Ref: QSS3BucketName
+        QSS3BucketRegion:
+          Ref: QSS3BucketRegion
+        QSS3KeyPrefix:
+          Ref: QSS3KeyPrefix
   DBCname:
     Condition: UseHostedZone
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneName: !Ref HostedZone
+      HostedZoneName:
+        Ref: HostedZone
       Comment: Route53 cname for the RDS
-      Name: !Join ['.', [!Ref 'AWS::StackName', 'db', !Ref 'HostedZone']]
+      Name:
+        Fn::Join:
+          - .
+          - - Ref: AWS::StackName
+            - db
+            - Ref: HostedZone
       Type: CNAME
       TTL: 900
       ResourceRecords:
-        - !GetAtt DB.Outputs.RDSEndPointAddress
-
-  # Loadbalancer
+        - Fn::GetAtt:
+            - DB
+            - Outputs.RDSEndPointAddress
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds
           Value: '3600'
-      Scheme: !If [UsePublicIp, 'internet-facing', 'internal']
-      SecurityGroups: [!Ref SecurityGroup]
-      Subnets: !Split
-        - ","
-        - Fn::ImportValue: !Sub "${ExportPrefix}PubNets"
+      Scheme:
+        Fn::If:
+          - UsePublicIp
+          - internet-facing
+          - internal
+      SecurityGroups:
+        - Ref: SecurityGroup
+      Subnets:
+        Fn::Split:
+          - ','
+          - Fn::ImportValue:
+              Fn::Sub: ${ExportPrefix}PubNets
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName}-LoadBalancer", StackName: !Ref 'AWS::StackName']
+          Value:
+            Fn::Sub:
+              - ${StackName}-LoadBalancer
+              - StackName:
+                  Ref: AWS::StackName
         - Key: Cluster
-          Value: !Ref AWS::StackName
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
-
+          Value:
+            Ref: AWS::StackName
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
   LoadBalancerHTTPListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
-        - !If
-          - DoSSL
-          - Type: redirect
-            RedirectConfig:
-              Protocol: HTTPS
-              Port: '443'
-              Host: '#{host}'
-              Path: '/#{path}'
-              Query: '#{query}'
-              StatusCode: HTTP_301
-          - Type: forward
-            TargetGroupArn: !Ref MainTargetGroup
-      LoadBalancerArn: !Ref LoadBalancer
+        - Fn::If:
+            - DoSSL
+            - Type: redirect
+              RedirectConfig:
+                Protocol: HTTPS
+                Port: '443'
+                Host: '#{host}'
+                Path: /#{path}
+                Query: '#{query}'
+                StatusCode: HTTP_301
+            - Type: forward
+              TargetGroupArn:
+                Ref: MainTargetGroup
+      LoadBalancerArn:
+        Ref: LoadBalancer
       Port: 80
       Protocol: HTTP
   LoadBalancerHTTPSListener:
@@ -1265,28 +1500,41 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       Certificates:
-        - CertificateArn: !Ref SSLCertificateARN
+        - CertificateArn:
+            Ref: SSLCertificateARN
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref MainTargetGroup
-      LoadBalancerArn: !Ref LoadBalancer
+          TargetGroupArn:
+            Ref: MainTargetGroup
+      LoadBalancerArn:
+        Ref: LoadBalancer
       Port: 443
       Protocol: HTTPS
-      SslPolicy: "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+      SslPolicy: ELBSecurityPolicy-TLS-1-2-Ext-2018-06
   MainTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Port: !Ref TomcatDefaultConnectorPort
+      Port:
+        Ref: TomcatDefaultConnectorPort
       Protocol: HTTP
       VpcId:
-        Fn::ImportValue: !Sub "${ExportPrefix}VPCID"
+        Fn::ImportValue:
+          Fn::Sub: ${ExportPrefix}VPCID
       HealthCheckIntervalSeconds: 20
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 2
       Matcher:
         HttpCode: '200'
-      HealthCheckPath: !If [UseContextPath, !Join ['', [!Ref 'TomcatContextPath', '/status']], '/status']
-      HealthCheckPort: !Ref TomcatDefaultConnectorPort
+      HealthCheckPath:
+        Fn::If:
+          - UseContextPath
+          - Fn::Join:
+              - ''
+              - - Ref: TomcatContextPath
+                - /status
+          - /status
+      HealthCheckPort:
+        Ref: TomcatDefaultConnectorPort
       HealthCheckProtocol: HTTP
       TargetGroupAttributes:
         - Key: stickiness.enabled
@@ -1299,25 +1547,32 @@ Resources:
         - Key: Name
           Value: MainTargetGroup
         - Key: Cluster
-          Value: !Ref AWS::StackName
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
+          Value:
+            Ref: AWS::StackName
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
     DependsOn:
       - LoadBalancer
   LoadBalancerCname:
     Condition: UseHostedZone
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneName: !Ref HostedZone
+      HostedZoneName:
+        Ref: HostedZone
       Comment: Route53 cname for the ALB
-      Name: !Join ['.', [!Ref "AWS::StackName", !Ref 'HostedZone']]
+      Name:
+        Fn::Join:
+          - .
+          - - Ref: AWS::StackName
+            - Ref: HostedZone
       Type: CNAME
       TTL: 900
       ResourceRecords:
-        - !GetAtt LoadBalancer.DNSName
+        - Fn::GetAtt:
+            - LoadBalancer
+            - DNSName
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -1326,76 +1581,90 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: !Ref CidrBlock
-        - !If
-          - UseBastionHost
-          - IpProtocol: tcp
-            FromPort: 22
-            ToPort: 22
-            CidrIp:
-              !Sub
-                - "${BastionIp}/32"
-                - BastionIp:
-                    Fn::ImportValue: !Sub '${ExportPrefix}BastionPrivIp'
-          - Ref: AWS::NoValue
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: !Ref CidrBlock
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: !Ref CidrBlock
+          CidrIp:
+            Ref: CidrBlock
+        - Fn::If:
+            - UseBastionHost
+            - IpProtocol: tcp
+              FromPort: 22
+              ToPort: 22
+              CidrIp:
+                Fn::Sub:
+                  - ${BastionIp}/32
+                  - BastionIp:
+                      Fn::ImportValue:
+                        Fn::Sub: ${ExportPrefix}BastionPrivIp
+            - Ref: AWS::NoValue
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp:
-            !Sub
-              - "${NAT1IP}/32"
+            Ref: CidrBlock
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp:
+            Ref: CidrBlock
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp:
+            Fn::Sub:
+              - ${NAT1IP}/32
               - NAT1IP:
-                  Fn::ImportValue: !Sub '${ExportPrefix}NAT1EIP'
+                  Fn::ImportValue:
+                    Fn::Sub: ${ExportPrefix}NAT1EIP
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp:
-            !Sub
-            - "${NAT2IP}/32"
-            - NAT2IP:
-                Fn::ImportValue: !Sub '${ExportPrefix}NAT2EIP'
+            Fn::Sub:
+              - ${NAT2IP}/32
+              - NAT2IP:
+                  Fn::ImportValue:
+                    Fn::Sub: ${ExportPrefix}NAT2EIP
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
           CidrIp:
-            !Sub
-            - "${NAT1IP}/32"
-            - NAT1IP:
-                Fn::ImportValue: !Sub '${ExportPrefix}NAT1EIP'
+            Fn::Sub:
+              - ${NAT1IP}/32
+              - NAT1IP:
+                  Fn::ImportValue:
+                    Fn::Sub: ${ExportPrefix}NAT1EIP
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
           CidrIp:
-            !Sub
-            - "${NAT2IP}/32"
-            - NAT2IP:
-                Fn::ImportValue: !Sub '${ExportPrefix}NAT2EIP'
+            Fn::Sub:
+              - ${NAT2IP}/32
+              - NAT2IP:
+                  Fn::ImportValue:
+                    Fn::Sub: ${ExportPrefix}NAT2EIP
       Tags:
         - Key: Name
-          Value: !Join [' ', [!Ref "AWS::StackName", 'sg']]
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
+          Value:
+            Fn::Join:
+              - ' '
+              - - Ref: AWS::StackName
+                - sg
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
       VpcId:
-        Fn::ImportValue: !Sub "${ExportPrefix}VPCID"
+        Fn::ImportValue:
+          Fn::Sub: ${ExportPrefix}VPCID
   SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !Ref SecurityGroup
+      GroupId:
+        Ref: SecurityGroup
       IpProtocol: '-1'
       FromPort: -1
       ToPort: -1
-      SourceSecurityGroupId: !Ref SecurityGroup
+      SourceSecurityGroupId:
+        Ref: SecurityGroup
   EncryptionKey:
     Condition: UseDatabaseEncryption
     DeletionPolicy: Retain
@@ -1404,12 +1673,13 @@ Resources:
     Properties:
       KeyPolicy:
         Version: 2012-10-17
-        Id: !Sub "${AWS::StackName}"
+        Id:
+          Fn::Sub: ${AWS::StackName}
         Statement:
           - Effect: Allow
             Principal:
               AWS:
-                - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
+                - Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:root
             Action:
               - kms:CreateAlias
               - kms:CreateGrant
@@ -1429,107 +1699,190 @@ Resources:
             Resource: '*'
       Tags:
         - Key: Name
-          Value: !Sub ["${StackName} Encryption Key", {StackName: !Ref 'AWS::StackName'}]
-        # NOTE: The leading COMMIT/TIMESTAMP are used to locate the position to update; see scripts/update-tags.py
-        - Key: "atl:quickstart:commit-id"
-          Value: "COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c"
-        - Key: "atl:quickstart:timestamp"
-          Value: "TIMESTAMP: 2022-03-14T21:36:02Z"
+          Value:
+            Fn::Sub:
+              - ${StackName} Encryption Key
+              - StackName:
+                  Ref: AWS::StackName
+        - Key: atl:quickstart:commit-id
+          Value: 'COMMIT: 628de71add242e3c3a3f5e018fb0cf74093e157c'
+        - Key: atl:quickstart:timestamp
+          Value: 'TIMESTAMP: 2022-03-14T21:36:02Z'
       EnableKeyRotation: true
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - EIAMPolicyWildcardResource
+          ignore_reasons:
+            - EIAMPolicyWildcardResource: Intent assumed for initial migration.
   EncryptionKeyAlias:
     Condition: UseDatabaseEncryption
     Type: AWS::KMS::Alias
     Properties:
-      AliasName: !Sub "alias/${AWS::StackName}"
-      TargetKeyId: !Ref EncryptionKey
+      AliasName:
+        Fn::Sub: alias/${AWS::StackName}
+      TargetKeyId:
+        Ref: EncryptionKey
   AnsibleRepoPinSHA:
     Type: AWS::SSM::Parameter
     Properties:
-      Description: "The dc-deployments-automation commit SHA that all nodes in the cluster will use"
-      Name: !Sub "/${AWS::StackName}/pinned-ansible-sha"
+      Description: The dc-deployments-automation commit SHA that all nodes in the cluster will use
+      Name:
+        Fn::Sub: /${AWS::StackName}/pinned-ansible-sha
       Type: String
-      AllowedPattern: '^(latest)|([0-9a-f]{5,40})$'
-      Value: "latest"
-      
-  # Optional: Cloudwatch dashboard to be created when CloudWatch is enabled
+      AllowedPattern: ^(latest)|([0-9a-f]{5,40})$
+      Value: latest
   CloudWatchDashboard:
     DependsOn:
       - DB
     Condition: EnableCloudWatch
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-cloudwatch-dashboard.yaml
-        - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-          S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+      TemplateURL:
+        Fn::Sub:
+          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-cloudwatch-dashboard.yaml
+          - S3Bucket:
+              Fn::If:
+                - UsingDefaultBucket
+                - Fn::Sub: ${QSS3BucketName}-${AWS::Region}
+                - Ref: QSS3BucketName
+            S3Region:
+              Fn::If:
+                - UsingDefaultBucket
+                - Ref: AWS::Region
+                - Ref: QSS3BucketRegion
       Parameters:
-        ProductStackName: !Sub "${AWS::StackName}"
-        ProductFamilyName: "crowd"
-        AsgToMonitor: !Ref ClusterNodeGroup
-
+        ProductStackName:
+          Fn::Sub: ${AWS::StackName}
+        ProductFamilyName: crowd
+        AsgToMonitor:
+          Ref: ClusterNodeGroup
 Outputs:
   ServiceURL:
     Description: The URL to access this Atlassian service.
-    Value: !If
-      - UseCustomDnsName
-      - !Sub
-        - "${HTTP}://${CustomDNSName}${ContextPath}"
-        - HTTP: !If [DoSSL, 'https', 'http']
-          CustomDNSName: !Ref CustomDnsName
-          ContextPath: !Ref TomcatContextPath
-      - !If
-        - UseHostedZone
-        - !Sub
-          - "${HTTP}://${LBCName}${ContextPath}"
-          - HTTP: !If [DoSSL, 'https', 'http']
-            LBCName: !Ref LoadBalancerCname
-            ContextPath: !Ref TomcatContextPath
-        - !Sub
-          - "${HTTP}://${LoadBalancerDNSName}${ContextPath}"
-          - HTTP: !If [DoSSL, 'https', 'http']
-            LoadBalancerDNSName: !GetAtt LoadBalancer.DNSName
-            ContextPath: !Ref TomcatContextPath
+    Value:
+      Fn::If:
+        - UseCustomDnsName
+        - Fn::Sub:
+            - ${HTTP}://${CustomDNSName}${ContextPath}
+            - HTTP:
+                Fn::If:
+                  - DoSSL
+                  - https
+                  - http
+              CustomDNSName:
+                Ref: CustomDnsName
+              ContextPath:
+                Ref: TomcatContextPath
+        - Fn::If:
+            - UseHostedZone
+            - Fn::Sub:
+                - ${HTTP}://${LBCName}${ContextPath}
+                - HTTP:
+                    Fn::If:
+                      - DoSSL
+                      - https
+                      - http
+                  LBCName:
+                    Ref: LoadBalancerCname
+                  ContextPath:
+                    Ref: TomcatContextPath
+            - Fn::Sub:
+                - ${HTTP}://${LoadBalancerDNSName}${ContextPath}
+                - HTTP:
+                    Fn::If:
+                      - DoSSL
+                      - https
+                      - http
+                  LoadBalancerDNSName:
+                    Fn::GetAtt:
+                      - LoadBalancer
+                      - DNSName
+                  ContextPath:
+                    Ref: TomcatContextPath
   LoadBalancerURL:
     Description: The load balancer URL.
-    Value: !Sub
-      - "${HTTP}://${LoadBalancerDNSName}"
-      - HTTP: !If [DoSSL, 'https', 'http']
-        LoadBalancerDNSName: !GetAtt LoadBalancer.DNSName
+    Value:
+      Fn::Sub:
+        - ${HTTP}://${LoadBalancerDNSName}
+        - HTTP:
+            Fn::If:
+              - DoSSL
+              - https
+              - http
+          LoadBalancerDNSName:
+            Fn::GetAtt:
+              - LoadBalancer
+              - DNSName
   SGname:
     Description: The name of the security group.
-    Value: !Ref SecurityGroup
-    Export: {
-      Name: !Join ['', [!Ref 'AWS::StackName', '-SGname']]
-    }
+    Value:
+      Ref: SecurityGroup
+    Export:
+      Name:
+        Fn::Join:
+          - ''
+          - - Ref: AWS::StackName
+            - -SGname
   DBEndpointAddress:
     Description: The database connection string.
-    Value: !GetAtt DB.Outputs.RDSEndPointAddress
+    Value:
+      Fn::GetAtt:
+        - DB
+        - Outputs.RDSEndPointAddress
   DBEncryptionKey:
     Condition: UseDatabaseEncryption
     Description: The alias of the encryption key created for Amazon RDS.
-    Value: !Ref EncryptionKeyAlias
+    Value:
+      Ref: EncryptionKeyAlias
   EFSCname:
     Description: The CNAME of the Amazon Elastic File System (Amazon EFS).
-    Value: !If
-      - UseHostedZone
-      - !Ref EFSCname
-      - !Ref ElasticFileSystem
-    Export: {
-      Name: !Join ['', [!Ref 'AWS::StackName', '-EFSCname']]
-    }
+    Value:
+      Fn::If:
+        - UseHostedZone
+        - Ref: EFSCname
+        - Ref: ElasticFileSystem
+    Export:
+      Name:
+        Fn::Join:
+          - ''
+          - - Ref: AWS::StackName
+            - -EFSCname
   CloudWatchDashboardURL:
     Description: CloudWatch monitoring dashboard URL.
-    Value: !GetAtt CloudWatchDashboard.Outputs.Dashboard
+    Value:
+      Fn::GetAtt:
+        - CloudWatchDashboard
+        - Outputs.Dashboard
     Condition: EnableCloudWatch
   DBTemplateURL:
-    Description:  The URL used to source the database template.
-    Value: !Sub
-      - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-database-for-atlassian-services.yaml
-      - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-        S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+    Description: The URL used to source the database template.
+    Value:
+      Fn::Sub:
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-database-for-atlassian-services.yaml
+        - S3Bucket:
+            Fn::If:
+              - UsingDefaultBucket
+              - Fn::Sub: ${QSS3BucketName}-${AWS::Region}
+              - Ref: QSS3BucketName
+          S3Region:
+            Fn::If:
+              - UsingDefaultBucket
+              - Ref: AWS::Region
+              - Ref: QSS3BucketRegion
   CloudWatchDashboardTemplateURL:
-    Description:  The URL used to source the CloudWatch template.
-    Value: !Sub
-      - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-cloudwatch-dashboard.yaml
-      - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-        S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
+    Description: The URL used to source the CloudWatch template.
+    Value:
+      Fn::Sub:
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/cfn-ps-atlassian-services/templates/quickstart-cloudwatch-dashboard.yaml
+        - S3Bucket:
+            Fn::If:
+              - UsingDefaultBucket
+              - Fn::Sub: ${QSS3BucketName}-${AWS::Region}
+              - Ref: QSS3BucketName
+          S3Region:
+            Fn::If:
+              - UsingDefaultBucket
+              - Ref: AWS::Region
+              - Ref: QSS3BucketRegion
