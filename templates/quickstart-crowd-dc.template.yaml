@@ -511,7 +511,7 @@ Parameters:
     Description: The port number for Catalina to use when automatically redirecting a non-SSL connector actioning a redirect to an SSL URI.
     Type: Number
   QSS3BucketName:
-    Default: aws-quickstart
+    Default: aws-ia
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Description: S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
@@ -540,7 +540,7 @@ Parameters:
     Description: The AWS Region where the Quick Start S3 bucket is hosted. By default, this is set to us-east-1. Do not update the value unless using a custom Quick Start S3 bucket.
     Type: String
   QSS3KeyPrefix:
-    Default: quickstart-atlassian-crowd/
+    Default: cfn-ps-atlassian-crowd/
     AllowedPattern: ^[0-9a-zA-Z-/]*$
     ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
     Description: S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
@@ -601,7 +601,7 @@ Conditions:
   UsingDefaultBucket:
     Fn::Equals:
       - Ref: QSS3BucketName
-      - aws-quickstart
+      - aws-ia
   UseBastionHost:
     Fn::And:
       - Fn::Equals:
